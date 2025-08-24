@@ -15,32 +15,30 @@ else:
     raise FileNotFoundError(f"Model file '{model_path}' not found.")
 
 # Define the input data model based on your dataset's columns
-# NOTE: This model is a placeholder. You must update it with all the
-# relevant features from your processed_data.csv file.
 class PredictionInput(BaseModel):
     Age: int
-    CityTier_2: int
-    CityTier_3: int
+    CityTier: int
     DurationOfPitch: int
-    Gender_Male: int
-    Gender_FeMale: int
-    Gender_NotSpecified: int
     NumberOfPersonVisiting: int
     NumberOfFollowups: int
-    ProductPitched_Deluxe: int
-    ProductPitched_King: int
-    ProductPitched_Super: int
-    ProductPitched_Basic: int
     PreferredPropertyStar: int
-    MaritalStatus_Married: int
-    MaritalStatus_Single: int
-    MaritalStatus_Unmarried: int
     NumberOfTrips: int
     Passport: int
     PitchSatisfactionScore: int
     OwnCar: int
     NumberOfChildrenVisiting: int
     MonthlyIncome: int
+    TypeofContact_SelfEnquiry: int
+    Occupation_LargeBusiness: int
+    Occupation_Salaried: int
+    Occupation_SmallBusiness: int
+    Gender_Male: int
+    ProductPitched_Deluxe: int
+    ProductPitched_King: int
+    ProductPitched_Super: int
+    MaritalStatus_Married: int
+    MaritalStatus_Single: int
+    MaritalStatus_Unmarried: int
 
 
 # Define the prediction endpoint
