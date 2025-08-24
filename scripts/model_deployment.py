@@ -7,7 +7,6 @@ def deploy_model():
     model_filename = "best_model.pkl"
 
     # Get the token from the environment variable set in GitHub Actions
-    # The pipeline.yml file must contain this secret
     token = os.environ.get("HF_TOKEN")
     
     if not token:

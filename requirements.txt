@@ -1,6 +1,6 @@
-fastapi
 pandas
 scikit-learn
 joblib
-huggingface-hub
+huggingface_hub
 uvicorn
+fastapi

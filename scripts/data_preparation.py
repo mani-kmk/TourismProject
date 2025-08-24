@@ -16,21 +16,10 @@ def prepare_data():
         return
 
     print("Data loaded. Performing data cleaning and one-hot encoding...")
-
-    # Identify categorical columns to be encoded
-    categorical_cols = data.select_dtypes(include=['object', 'category']).columns
-
-    # Drop any rows with missing values
+    
+    # Drop rows with any missing values
     data.dropna(inplace=True)
-
-    # Apply one-hot encoding
-    data = pd.get_dummies(data, columns=categorical_cols, drop_first=True)
-
-    # Ensure all columns are numeric
-    for col in data.columns:
-        if data[col].dtype == 'object':
-            print(f"Warning: Column '{col}' is still of object type. Check data.")
-
+    
     # Save the processed data
     data.to_csv(processed_data_path, index=False)
     print("Data preparation complete. Processed data saved to processed_data.csv")

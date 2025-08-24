@@ -26,6 +26,17 @@ jobs:
       - name: Run model training script
         run: python scripts/model_training.py
 
+      - name: Upload trained model artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: best_model
+          path: best_model.pkl
+
+      - name: Download trained model artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: best_model
+
       - name: Run model deployment script
         run: python scripts/model_deployment.py
         env:
