@@ -3,7 +3,6 @@ FROM python:3.9-slim
 
 # Create a non-root user and necessary directories
 RUN adduser --system --group user
-RUN mkdir -p /home/user/.cache/huggingface
 RUN mkdir -p /home/user/app
 RUN chown -R user:user /home/user
 
@@ -11,8 +10,14 @@ RUN chown -R user:user /home/user
 WORKDIR /home/user/app
 USER user
 
-# Set environment variable for Hugging Face cache
+# Set environment variables for Hugging Face cache and pip installation
 ENV HF_HOME="/home/user/.cache/huggingface"
+ENV PIP_TARGET="/home/user/app/packages"
+ENV PYTHONPATH="$PIP_TARGET:$PYTHONPATH"
+
+# Create the directories for pip and cache
+RUN mkdir -p /home/user/.cache/huggingface
+RUN mkdir -p /home/user/app/packages
 
 # Copy the requirements file and install dependencies
 COPY requirements.txt .
