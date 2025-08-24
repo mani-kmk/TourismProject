@@ -1,6 +1,7 @@
 pandas
-scikit-learn
-joblib
-huggingface_hub
-uvicorn
 fastapi
+uvicorn
+pydantic
+scikit-learn
+lightgbm
+joblib

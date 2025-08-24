@@ -2,6 +2,7 @@ import joblib
 import pandas as pd
 from fastapi import FastAPI
 from pydantic import BaseModel
+import os
 
 # Initialize the FastAPI app
 app = FastAPI()
@@ -11,7 +12,8 @@ model_filename = "model_lgbm.pkl"
 
 # Load the model directly from the local filesystem
 try:
-    model = joblib.load(model_filename)
+    model_path = os.path.join(os.getcwd(), model_filename)
+    model = joblib.load(model_path)
     print("Model loaded successfully!")
 except Exception as e:
     raise RuntimeError(f"Failed to load model: {e}")
