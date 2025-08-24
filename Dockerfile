@@ -4,7 +4,7 @@ FROM python:3.9-slim
 # Create a non-root user and necessary directories
 RUN adduser --system --group user
 RUN mkdir -p /home/user/app
-RUN chown user:user /home/user/app
+RUN chown -R user:user /home/user
 RUN mkdir -p /home/user/.cache/huggingface
 RUN chown -R user:user /home/user/.cache
 
