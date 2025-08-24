@@ -10,7 +10,6 @@ def train_model():
     current_dir = os.path.dirname(os.path.abspath(__file__))
     project_root = os.path.dirname(current_dir)
     processed_data_path = os.path.join(project_root, 'processed_data.csv')
-    model_path = os.path.join(project_root, 'best_model.pkl')
 
     # Load the processed data
     try:
@@ -37,9 +36,9 @@ def train_model():
     accuracy = accuracy_score(y_test, y_pred)
     print(f"Model accuracy: {accuracy:.2f}")
 
-    # Save the trained model
-    joblib.dump(model, model_path)
-    print(f"Model saved to {model_path}")
+    # Save the trained model to the project root
+    joblib.dump(model, os.path.join(project_root, 'best_model.pkl'))
+    print("Model saved to best_model.pkl")
 
 if __name__ == "__main__":
     train_model()

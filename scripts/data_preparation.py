@@ -6,8 +6,7 @@ def prepare_data():
     current_dir = os.path.dirname(os.path.abspath(__file__))
     project_root = os.path.dirname(current_dir)
     data_path = os.path.join(project_root, 'tourism_dataset.csv')
-    processed_data_path = os.path.join(project_root, 'processed_data.csv')
-
+    
     # Load the raw data
     try:
         data = pd.read_csv(data_path)
@@ -16,7 +15,7 @@ def prepare_data():
         return
 
     print("Data loaded. Performing data cleaning and one-hot encoding...")
-
+    
     # Identify categorical columns to be encoded
     categorical_cols = data.select_dtypes(include=['object', 'category']).columns
 
@@ -25,14 +24,9 @@ def prepare_data():
 
     # Apply one-hot encoding
     data = pd.get_dummies(data, columns=categorical_cols, drop_first=True)
-
-    # Ensure all columns are numeric
-    for col in data.columns:
-        if data[col].dtype == 'object':
-            print(f"Warning: Column '{col}' is still of object type. Check data.")
-
-    # Save the processed data
-    data.to_csv(processed_data_path, index=False)
+    
+    # Save the processed data to the project root
+    data.to_csv(os.path.join(project_root, 'processed_data.csv'), index=False)
     print("Data preparation complete. Processed data saved to processed_data.csv")
 
 if __name__ == "__main__":
