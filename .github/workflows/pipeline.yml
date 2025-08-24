@@ -1,0 +1,32 @@
+name: CI/CD for ML Pipeline
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-and-run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run data preparation script
+        run: python scripts/data_preparation.py
+
+      - name: Run model training script
+        run: python scripts/model_training.py
+
+      - name: Run model deployment script
+        run: python scripts/model_deployment.py
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
