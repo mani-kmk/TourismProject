@@ -1,18 +1,18 @@
 # Use a slim Python base image
 FROM python:3.9-slim
 
-# Create a non-root user and create necessary directories with correct permissions
+# Create a non-root user and necessary directories
 RUN adduser --system --group user
-RUN mkdir /home/user/app
-RUN chown user:user /home/user/app
+RUN mkdir -p /home/user/.cache/huggingface
+RUN mkdir -p /home/user/app
+RUN chown -R user:user /home/user
 
-# Set the working directory for the user
+# Set the working directory and switch to the non-root user
 WORKDIR /home/user/app
 USER user
 
-# Set environment variable for Hugging Face cache and create the directory
+# Set environment variable for Hugging Face cache
 ENV HF_HOME="/home/user/.cache/huggingface"
-RUN mkdir -p /home/user/.cache/huggingface
 
 # Copy the requirements file and install dependencies
 COPY requirements.txt .
