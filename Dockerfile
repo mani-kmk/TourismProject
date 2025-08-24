@@ -1,26 +1,15 @@
 # Use a slim Python base image
 FROM python:3.9-slim
 
-# Create a non-root user and necessary directories with correct permissions
-RUN adduser --system --group user
-RUN mkdir -p /home/user/app
-RUN chown -R user:user /home/user
-RUN mkdir -p /home/user/.cache/huggingface/hub
-RUN chown -R user:user /home/user/.cache
+# Set the working directory for the application
+WORKDIR /app
 
-# Set the working directory and switch to the non-root user
-WORKDIR /home/user/app
-USER user
-
-# Set environment variables for Hugging Face cache and pip installation
-ENV HF_HOME="/home/user/.cache/huggingface"
-ENV PIP_TARGET="/home/user/app/packages"
-ENV PYTHONPATH="$PIP_TARGET:$PYTHONPATH"
-ENV PATH="$PIP_TARGET/bin:$PATH"
-
-# Copy the requirements file and install dependencies
+# Copy the requirements file and install dependencies as root
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
+
+# Download the model file during the build to a known location
+RUN python -c "from huggingface_hub import hf_hub_download; hf_hub_download(repo_id='maniKKrishnan/tourism-customer-prediction', filename='model_lgbm.pkl')"
 
 # Copy the application code
 COPY predict.py .

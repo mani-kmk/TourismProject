@@ -1,25 +1,25 @@
-import pandas as pd
 import joblib
+import pandas as pd
 from fastapi import FastAPI
 from pydantic import BaseModel
-import os
 from huggingface_hub import hf_hub_download
 
-# Initialize FastAPI
+# Initialize the FastAPI app
 app = FastAPI()
 
-# Download the trained model from the Hugging Face Hub
+# Model and repository information
 model_repo_id = "maniKKrishnan/tourism-customer-prediction"
-model_filename = "best_model.pkl"
+model_filename = "model_lgbm.pkl"
 
+# Download the model and load it
 try:
     model_path = hf_hub_download(repo_id=model_repo_id, filename=model_filename)
     model = joblib.load(model_path)
-    print("Model downloaded and loaded successfully.")
+    print("Model loaded successfully!")
 except Exception as e:
     raise RuntimeError(f"Failed to download or load model: {e}")
 
-# Define the input data model based on your dataset's columns
+# Define the input data model
 class PredictionInput(BaseModel):
     Age: int
     CityTier: int
@@ -47,17 +47,17 @@ class PredictionInput(BaseModel):
 
 # Define the prediction endpoint
 @app.post("/predict")
-def predict(data: PredictionInput):
-    # Prepare the input data for the model
-    input_df = pd.DataFrame([data.dict()])
-    
-    # Make a prediction
-    prediction = model.predict(input_df)[0]
-    
-    # Return the prediction result
-    return {"prediction": int(prediction)}
+def predict_outcome(data: PredictionInput):
+    df = pd.DataFrame([data.dict()])
+    prediction = model.predict(df)[0]
+    prediction_proba = model.predict_proba(df)[0][1]
 
-# Root endpoint for health check
+    return {
+        "prediction": int(prediction),
+        "prediction_probability": float(prediction_proba)
+    }
+
+# A simple root endpoint for health check
 @app.get("/")
-def home():
-    return {"message": "API is running."}
+def read_root():
+    return {"message": "API is running! Visit /docs for documentation."}
