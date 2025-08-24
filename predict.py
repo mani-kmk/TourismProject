@@ -3,16 +3,21 @@ import joblib
 from fastapi import FastAPI
 from pydantic import BaseModel
 import os
+from huggingface_hub import hf_hub_download
 
 # Initialize FastAPI
 app = FastAPI()
 
-# Load the trained model
-model_path = "best_model.pkl"
-if os.path.exists(model_path):
+# Download the trained model from the Hugging Face Hub
+model_repo_id = "maniKKrishnan/tourism-customer-prediction"
+model_filename = "best_model.pkl"
+
+try:
+    model_path = hf_hub_download(repo_id=model_repo_id, filename=model_filename)
     model = joblib.load(model_path)
-else:
-    raise FileNotFoundError(f"Model file '{model_path}' not found.")
+    print("Model downloaded and loaded successfully.")
+except Exception as e:
+    raise RuntimeError(f"Failed to download or load model: {e}")
 
 # Define the input data model based on your dataset's columns
 class PredictionInput(BaseModel):
@@ -39,7 +44,6 @@ class PredictionInput(BaseModel):
     MaritalStatus_Married: int
     MaritalStatus_Single: int
     MaritalStatus_Unmarried: int
-
 
 # Define the prediction endpoint
 @app.post("/predict")
