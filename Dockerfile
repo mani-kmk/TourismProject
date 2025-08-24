@@ -1,18 +1,16 @@
 # Use a slim Python base image
 FROM python:3.9-slim
 
-# Set the working directory for the application
+# Set the working directory
 WORKDIR /app
 
-# Copy the requirements file and install dependencies as root
+# Copy the requirements file and install dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Download the model file during the build to a known location
-RUN python -c "from huggingface_hub import hf_hub_download; hf_hub_download(repo_id='maniKKrishnan/tourism-customer-prediction', filename='model_lgbm.pkl')"
-
-# Copy the application code
+# Copy the model and application code
 COPY predict.py .
+COPY model_lgbm.pkl .
 
 # Expose the port for the FastAPI application
 EXPOSE 8000

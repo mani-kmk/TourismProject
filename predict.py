@@ -2,22 +2,19 @@ import joblib
 import pandas as pd
 from fastapi import FastAPI
 from pydantic import BaseModel
-from huggingface_hub import hf_hub_download
 
 # Initialize the FastAPI app
 app = FastAPI()
 
-# Model and repository information
-model_repo_id = "maniKKrishnan/tourism-customer-prediction"
+# Model filename
 model_filename = "model_lgbm.pkl"
 
-# Download the model and load it
+# Load the model directly from the local filesystem
 try:
-    model_path = hf_hub_download(repo_id=model_repo_id, filename=model_filename)
-    model = joblib.load(model_path)
+    model = joblib.load(model_filename)
     print("Model loaded successfully!")
 except Exception as e:
-    raise RuntimeError(f"Failed to download or load model: {e}")
+    raise RuntimeError(f"Failed to load model: {e}")
 
 # Define the input data model
 class PredictionInput(BaseModel):
