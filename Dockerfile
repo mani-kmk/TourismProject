@@ -4,9 +4,8 @@ FROM python:3.9-slim
 # Create a non-root user and necessary directories
 RUN adduser --system --group user
 RUN mkdir -p /home/user/app
+RUN mkdir -p /home/user/.cache/huggingface/hub
 RUN chown -R user:user /home/user
-RUN mkdir -p /home/user/.cache/huggingface
-RUN chown -R user:user /home/user/.cache
 
 # Set the working directory and switch to the non-root user
 WORKDIR /home/user/app
