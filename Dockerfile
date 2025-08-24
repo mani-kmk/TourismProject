@@ -1,15 +1,13 @@
 # Use a slim Python base image
 FROM python:3.9-slim
 
-# Create a non-root user and necessary directories
+# Create a non-root user and switch to it immediately
 RUN adduser --system --group user
-RUN mkdir -p /home/user/app
-RUN mkdir -p /home/user/.cache/huggingface/hub
-RUN chown -R user:user /home/user
-
-# Set the working directory and switch to the non-root user
-WORKDIR /home/user/app
 USER user
+
+# Set the working directory for the user and create necessary directories
+WORKDIR /home/user/app
+RUN mkdir -p /home/user/.cache/huggingface
 
 # Set environment variables for Hugging Face cache and pip installation
 ENV HF_HOME="/home/user/.cache/huggingface"
